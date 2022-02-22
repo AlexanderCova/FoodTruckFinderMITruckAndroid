@@ -1,4 +1,22 @@
 <resources>
     <string name="app_name">FoodTruckFinderMiTruck</string>
     <string name="title_text">Food Truck Finder Mi</string>
+    <string name="email_hint">Email</string>
+    <string name="trucks">Trucks</string>
+    <string name="signup_hint">Signup</string>
+    <string name="foodtype_spinner">FoodType:</string>
+    <string name="truck_name_hint">Truck Name</string>
+    <string name="password_hint">Password</string>
+
+
+    <string-array name="FoodTypes">
+        <item>Comfort</item>
+        <item>Mexican</item>
+        <item>Street Food</item>
+        <item>Chinese</item>
+        <item>American</item>
+        <item>Desert</item>
+        <item>Desert</item>
+    </string-array>
+
 </resources>
