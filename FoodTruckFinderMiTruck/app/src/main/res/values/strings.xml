@@ -7,6 +7,7 @@
     <string name="foodtype_spinner">FoodType:</string>
     <string name="truck_name_hint">Truck Name</string>
     <string name="password_hint">Password</string>
+    <string name="login">Login</string>
 
 
     <string-array name="FoodTypes">

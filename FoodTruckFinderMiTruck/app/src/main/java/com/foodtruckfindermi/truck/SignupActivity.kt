@@ -14,7 +14,7 @@ class SignupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signup)
 
         val signupButton = findViewById<Button>(R.id.signupButtonConfirm)
-        val nameEdit = findViewById<EditText>(R.id.truckNameEditText)
+        val nameEdit = findViewById<EditText>(R.id.truckNameEdit)
         val emailEdit = findViewById<EditText>(R.id.emailEdit)
         val passwordEdit = findViewById<EditText>(R.id.editPassword)
 
