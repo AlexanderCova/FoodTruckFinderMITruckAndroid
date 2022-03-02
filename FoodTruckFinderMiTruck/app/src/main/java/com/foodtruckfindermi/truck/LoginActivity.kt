@@ -18,7 +18,7 @@ class LoginActivity : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.loginButtonConfirm)
 
         loginButton.setOnClickListener {
-            Fuel.get("https://foodtruckfindermi.com/truck_auth?email=${emailEdit.text}&password=${passwordEdit.text}&type=LOGIN")
+            Fuel.get("http://foodtruckfindermi.com/truck-login?email=${emailEdit.text}&password=${passwordEdit.text}")
                 .response { _request, _response, result ->
 
                     val (bytes) = result

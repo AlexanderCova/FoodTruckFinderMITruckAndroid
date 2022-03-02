@@ -44,7 +44,7 @@ class SignupActivity : AppCompatActivity() {
 
 
         signupButton.setOnClickListener {
-            Fuel.get("https://foodtruckfindermi.com/truck_auth?name=${nameEdit.text}&email=${emailEdit.text}&password=${passwordEdit.text}&food=${selected_food}&type=LOGIN")
+            Fuel.get("http://foodtruckfindermi.com/truck-signup?name=${nameEdit.text}&email=${emailEdit.text}&password=${passwordEdit.text}&food=${selected_food}")
                 .response { _request, _response, result ->
                     val (bytes) = result
                     if (bytes != null) {
