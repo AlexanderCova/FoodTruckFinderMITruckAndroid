@@ -79,9 +79,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="148dp"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailEdit"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -89,7 +89,7 @@
         android:id="@+id/truckNameEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="148dp"
+        android:layout_marginTop="32dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/truck_name_hint"
@@ -98,8 +98,9 @@
         android:textAlignment="viewStart"
         android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trucksText" />
+        app:layout_constraintTop_toBottomOf="@+id/signupTextView" />
 
     <TextView
         android:id="@+id/spinnerTextView"
@@ -116,11 +117,11 @@
         android:id="@+id/signupTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
+        android:layout_marginTop="44dp"
         android:text="@string/signup_hint"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/truckNameEdit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trucksText" />
 </androidx.constraintlayout.widget.ConstraintLayout>
