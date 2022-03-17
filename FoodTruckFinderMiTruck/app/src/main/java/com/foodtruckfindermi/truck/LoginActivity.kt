@@ -19,7 +19,7 @@ class LoginActivity : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.loginButtonConfirm)
 
         loginButton.setOnClickListener {
-            Fuel.get("http://foodtruckfindermi.com/truck-login?email=Truck1@gmail.com&password=Truck1")
+            Fuel.get("http://foodtruckfindermi.com/truck-login?email=${emailEdit.text}&password=${passwordEdit.text}")
                 .response { _request, _response, result ->
 
                     Log.i("http", "sent request")
@@ -31,6 +31,7 @@ class LoginActivity : AppCompatActivity() {
                         if (loginResult.equals("call true")) {
                             Log.i("true", "true")
                             val intent = Intent(this, TruckActivity::class.java)
+                            intent.putExtra("email", emailEdit.text.toString())
                             startActivity(intent)
                         } else{
                             Log.i("false", "false")
