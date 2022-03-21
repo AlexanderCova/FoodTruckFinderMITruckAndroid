@@ -1,24 +1,28 @@
 package com.foodtruckfindermi.truck
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.github.kittinunf.fuel.Fuel
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationServices.*
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_truck.*
 
 class TruckActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var lat : Double = 0.0
-    private var lon : Double = 0.0
+    var lat : Double = 0.0
+    var lon : Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +57,9 @@ class TruckActivity : AppCompatActivity() {
             }
             return
         }
-        fusedLocationClient.lastLocation
+        val cancellationToken = CancellationTokenSource().token
+
+        fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, cancellationToken)
             .addOnSuccessListener { location : Location? ->
                 if (location != null) {
                     lat = location.latitude
@@ -61,10 +67,42 @@ class TruckActivity : AppCompatActivity() {
                 }
             }
 
-        Fuel.get("http://foodtruckfindermi.com/open-truck?email=${email}&lat=${lat}&lon=${lon}")
-            .response { _request, _response, result ->
-                Log.i("http", "Call made")
+        Log.i("Lat", lat.toString())
+        Log.i("Lon", lon.toString())
 
+        Fuel.get("http://foodtruckfindermi.com/open-truck?email=${email}&lat=${lat.toString()}&lon=${lon.toString()}")
+            .response { _request, _response, result ->
+
+                val (bytes) = result
+                if (bytes != null) {
+                    val returned = String(bytes)
+
+                    if (returned == "opened") {
+                        val snackbar = Snackbar.make(
+                            openButton, "Opened truck at: ${lat} ${lon}",
+                            Snackbar.LENGTH_SHORT
+                        ).setAction("Action", null)
+                        snackbar.show()
+
+                        openButton.text = "Close Truck"
+
+
+
+
+                    } else if (returned == "closed") {
+                        val snackbar = Snackbar.make(
+                            openButton, "Truck Closed",
+                            Snackbar.LENGTH_SHORT
+                        ).setAction("Action", null)
+                        snackbar.show()
+
+                        openButton.text = "Open Truck"
+
+
+                    }
+
+
+                }
             }
 
     }
