@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
+import kotlinx.coroutines.runBlocking
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,27 +21,31 @@ class LoginActivity : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.loginButtonConfirm)
 
         loginButton.setOnClickListener {
-            Fuel.get("http://foodtruckfindermi.com/truck-login?email=${emailEdit.text}&password=${passwordEdit.text}")
-                .response { _request, _response, result ->
+            runBlocking {
+                val (_request, _response, result) = Fuel.get("http://foodtruckfindermi.com/truck-login?email=${emailEdit.text}&password=${passwordEdit.text}")
+                .awaitStringResponseResult()
 
-                    Log.i("http", "sent request")
+                result.fold({data ->
+                    if (data.equals("true")) {
+                        startIntent()
 
-                    val (bytes) = result
-                    if (bytes != null) {
-                        var loginResult = "call ${String(bytes)}"
-
-                        if (loginResult.equals("call true")) {
-                            Log.i("true", "true")
-                            val intent = Intent(this, TruckActivity::class.java)
-                            intent.putExtra("email", emailEdit.text.toString())
-                            startActivity(intent)
-                        } else{
-                            Log.i("false", "false")
-                        }
                     } else {
-                        Log.i("http", "false")
+                        Log.i("false", "false")
                     }
+                }, {error -> Log.e("http", "${error}")})
+
+
                 }
+            }
         }
+
+    fun startIntent() {
+        val emailEdit = findViewById<EditText>(R.id.emailLoginEdit)
+
+        val intent = Intent(this, TruckActivity::class.java)
+        intent.putExtra("email", emailEdit.text.toString())
+        startActivity(intent)
     }
-}
+
+
+    }

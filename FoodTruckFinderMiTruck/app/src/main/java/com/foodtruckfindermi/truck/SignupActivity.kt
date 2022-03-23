@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.core.content.ContextCompat.startActivity
 import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
+import kotlinx.coroutines.runBlocking
 
 class SignupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,8 +27,10 @@ class SignupActivity : AppCompatActivity() {
         var selected_food = ""
 
         if (food_spinner != null) {
-            val adapter = ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, food_types)
+            val adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item, food_types
+            )
             food_spinner.adapter = adapter
 
             food_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -44,20 +49,29 @@ class SignupActivity : AppCompatActivity() {
 
 
         signupButton.setOnClickListener {
-            Fuel.get("http://foodtruckfindermi.com/truck-signup?name=${nameEdit.text}&email=${emailEdit.text}&password=${passwordEdit.text}&food=${selected_food}")
-                .response { _request, _response, result ->
-                    val (bytes) = result
-                    if (bytes != null) {
-                        var loginResult = "call ${String(bytes)}"
+            runBlocking {
+                val (_request, _response, result) = Fuel.post("http://foodtruckfindermi.com/truck-signup", listOf("name" to nameEdit.text, "email" to emailEdit.text, "password" to passwordEdit.text, "food" to selected_food))
+                    .awaitStringResponseResult()
 
-                        if (loginResult.equals("call true")) {
-                            val intent = Intent(this, TruckActivity::class.java)
-                            startActivity(intent)
-                        } else if(loginResult.equals("call false")) {
-                            Log.i("http", "false")
+                result.fold({ data ->
+                    if (data.equals("true")) {
+                        startIntent()
+                    } else if (data.equals("false")) {
+                        Log.i("http", "false")
+                    }}, { error -> Log.e("http", "${error}")})
+
+
+
+
+
                         }
-                    }
                 }
-        }
+            }
+
+
+
+    fun startIntent() {
+        val intent = Intent(this, TruckActivity::class.java)
+        startActivity(intent)
     }
 }

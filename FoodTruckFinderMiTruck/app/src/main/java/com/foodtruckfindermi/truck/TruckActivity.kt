@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.location.LocationServices
@@ -17,12 +18,13 @@ import com.google.android.gms.location.LocationServices.*
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_truck.*
+import kotlinx.coroutines.runBlocking
 
 class TruckActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    var lat : Double = 0.0
-    var lon : Double = 0.0
+    var lat: Double = 0.0
+    var lon: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,24 +45,33 @@ class TruckActivity : AppCompatActivity() {
 
 
     private fun openTruck(email: String?, fusedLocationClient: FusedLocationProviderClient) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION
+        if (ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+                )
             } else {
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+                )
             }
             return
         }
         val cancellationToken = CancellationTokenSource().token
 
         fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, cancellationToken)
-            .addOnSuccessListener { location : Location? ->
+            .addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     lat = location.latitude
                     lon = location.longitude
@@ -70,42 +81,40 @@ class TruckActivity : AppCompatActivity() {
         Log.i("Lat", lat.toString())
         Log.i("Lon", lon.toString())
 
-        Fuel.get("http://foodtruckfindermi.com/open-truck?email=${email}&lat=${lat.toString()}&lon=${lon.toString()}")
-            .response { _request, _response, result ->
+        runBlocking {
+            val (_request, _response, result) = Fuel.post("http://foodtruckfindermi.com/open-truck", listOf("email" to email, "lat" to lat.toString(), "lon" to lon.toString()))
+                .awaitStringResponseResult()
 
-                val (bytes) = result
-                if (bytes != null) {
-                    val returned = String(bytes)
+            result.fold({ data ->
 
-                    if (returned == "opened") {
-                        val snackbar = Snackbar.make(
-                            openButton, "Opened truck at: ${lat} ${lon}",
-                            Snackbar.LENGTH_SHORT
-                        ).setAction("Action", null)
-                        snackbar.show()
+                if (data == "opened") {
+                    val snackbar = Snackbar.make(
+                        openButton, "Opened truck at: ${lat} ${lon}",
+                        Snackbar.LENGTH_SHORT
+                    ).setAction("Action", null)
+                    snackbar.show()
 
-                        openButton.text = "Close Truck"
-
+                    openButton.text = "Close Truck"
 
 
+                } else if (data == "closed") {
+                    val snackbar = Snackbar.make(
+                        openButton, "Truck Closed",
+                        Snackbar.LENGTH_SHORT
+                    ).setAction("Action", null)
+                    snackbar.show()
 
-                    } else if (returned == "closed") {
-                        val snackbar = Snackbar.make(
-                            openButton, "Truck Closed",
-                            Snackbar.LENGTH_SHORT
-                        ).setAction("Action", null)
-                        snackbar.show()
-
-                        openButton.text = "Open Truck"
-
-
-                    }
-
+                    openButton.text = "Open Truck"
 
                 }
-            }
 
+
+            }, {error -> Log.e("http", "${error}")})
+
+        }
     }
+
+
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
                                             grantResults: IntArray) {
