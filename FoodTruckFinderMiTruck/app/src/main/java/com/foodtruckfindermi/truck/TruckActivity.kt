@@ -1,6 +1,7 @@
 package com.foodtruckfindermi.truck
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -9,6 +10,8 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.youfood.Review
+import com.example.youfood.ReviewAdapter
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -25,6 +28,11 @@ class TruckActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     var lat: Double = 0.0
     var lon: Double = 0.0
+    private lateinit var reviewBodyArray : Array<String>
+    private lateinit var reviewAuthorArray: Array<String>
+    private lateinit var reviewDateArray: Array<String>
+
+    private lateinit var reviewArrayList : ArrayList<Review>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +40,8 @@ class TruckActivity : AppCompatActivity() {
 
         val openButton = findViewById<Button>(R.id.openButton)
         val email = intent.getStringExtra("email")
+        val reviewList = findViewById<ListView>(R.id.reviewList)
+        val eventTabButton = findViewById<Button>(R.id.eventTabButton)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -41,6 +51,43 @@ class TruckActivity : AppCompatActivity() {
             }
 
         }
+
+        eventTabButton.setOnClickListener {
+            val intent = Intent(this, EventsActivity::class.java)
+            intent.putExtra("email", email)
+            startActivity(intent)
+        }
+
+
+        runBlocking {
+            val (request, response, result) = Fuel.get("http://foodtruckfindermi.com/review-query?truck=${email}")
+                .awaitStringResponseResult()
+
+            result.fold(
+                { data ->
+                    var reviewArray = data.split("^")
+                    Log.i("Arrays", reviewArray[0].toString())
+
+                    reviewAuthorArray = reviewArray[0].split("`").drop(1).toTypedArray()
+
+                    reviewBodyArray = reviewArray[1].split("`").drop(1).toTypedArray()
+
+                    reviewDateArray = reviewArray[2].split("`").drop(1).toTypedArray()
+
+                    reviewArrayList = ArrayList()
+
+                    for(i in reviewAuthorArray.indices){
+
+                        val review = Review(reviewAuthorArray[i], reviewBodyArray[i], reviewDateArray[i])
+                        reviewArrayList.add(review)
+                    }
+
+                    reviewList.adapter = ReviewAdapter(this@TruckActivity, reviewArrayList)
+
+                },
+                { error -> Log.e("http", "${error}") })
+        }
+
     }
 
 
@@ -112,6 +159,13 @@ class TruckActivity : AppCompatActivity() {
             }, {error -> Log.e("http", "${error}")})
 
         }
+
+
+
+
+
+
+
     }
 
 

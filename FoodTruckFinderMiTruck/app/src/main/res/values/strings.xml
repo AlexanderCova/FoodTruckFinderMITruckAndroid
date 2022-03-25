@@ -8,6 +8,10 @@
     <string name="truck_name_hint">Truck Name</string>
     <string name="password_hint">Password</string>
     <string name="login">Login</string>
+    <string name="dashboard_tab">Dashboard</string>
+    <string name="open_truck_hint">Open Truck</string>
+    <string name="events_tab_text">Events</string>
+    <string name="settings_hint">Settings</string>
 
 
     <string-array name="FoodTypes">
