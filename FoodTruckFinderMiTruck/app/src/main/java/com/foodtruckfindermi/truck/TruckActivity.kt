@@ -90,6 +90,9 @@ class TruckActivity : AppCompatActivity() {
 
     }
 
+    private fun adapter(array: Array<String>) {
+
+    }
 
     private fun openTruck(email: String?, fusedLocationClient: FusedLocationProviderClient) {
         if (ActivityCompat.checkSelfPermission(

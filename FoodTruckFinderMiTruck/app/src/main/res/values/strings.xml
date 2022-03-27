@@ -12,6 +12,14 @@
     <string name="open_truck_hint">Open Truck</string>
     <string name="events_tab_text">Events</string>
     <string name="settings_hint">Settings</string>
+    <string name="reviews_title">Reviews</string>
+    <string name="create_event_hint">Create Event</string>
+    <string name="event_date_hint">Event Date</string>
+    <string name="event_name_hint">Event Name</string>
+    <string name="event_description_hint">Event Description</string>
+    <string name="event_city_hint">City</string>
+    <string name="event_submit_hint">Submit</string>
+    <string name="back_hint">Back</string>
 
 
     <string-array name="FoodTypes">
