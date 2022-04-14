@@ -14,8 +14,11 @@
         <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/layout/activity_truck.xml" value="0.25" />
         <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/layout/list_item.xml" value="0.4548952543822146" />
         <entry key="app/src/main/res/drawable-v24/searchview_background.xml" value="0.195" />
+        <entry key="app/src/main/res/drawable/required_text_background.xml" value="0.364" />
         <entry key="app/src/main/res/layout/activity_create_event.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_events.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.18070652173913043" />
+        <entry key="app/src/main/res/layout/activity_signup.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/activity_truck.xml" value="0.25042419433593754" />
         <entry key="app/src/main/res/layout/event_list_item.xml" value="0.44270477294921873" />
         <entry key="app/src/main/res/layout/list_item.xml" value="0.17119565217391305" />

@@ -1,10 +1,13 @@
 package com.foodtruckfindermi.truck
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Location
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +25,7 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_truck.*
 import kotlinx.coroutines.runBlocking
+import java.io.ByteArrayOutputStream
 
 class TruckActivity : AppCompatActivity() {
 
@@ -42,6 +46,8 @@ class TruckActivity : AppCompatActivity() {
         val email = intent.getStringExtra("email")
         val reviewList = findViewById<ListView>(R.id.reviewList)
         val eventTabButton = findViewById<Button>(R.id.eventTabButton)
+        val settingsButton = findViewById<ImageButton>(R.id.settingsButton)
+        val REQUEST_CODE = 100
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -49,7 +55,12 @@ class TruckActivity : AppCompatActivity() {
             if (email != null) {
                 openTruck(email, fusedLocationClient)
             }
+        }
 
+        settingsButton.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            intent.putExtra("email", email)
+            startActivity(intent)
         }
 
         eventTabButton.setOnClickListener {
@@ -90,9 +101,10 @@ class TruckActivity : AppCompatActivity() {
 
     }
 
-    private fun adapter(array: Array<String>) {
 
-    }
+
+
+
 
     private fun openTruck(email: String?, fusedLocationClient: FusedLocationProviderClient) {
         if (ActivityCompat.checkSelfPermission(
