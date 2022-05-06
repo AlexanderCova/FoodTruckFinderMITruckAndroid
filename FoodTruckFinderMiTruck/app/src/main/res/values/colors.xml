@@ -13,5 +13,6 @@
     <color name="true_red">#BF2604</color>
     <color name="dark_red">#730202</color>
     <color name="shadow_brown">#260101</color>
+    <color name="gray">#C4C4C4</color>
 
 </resources>

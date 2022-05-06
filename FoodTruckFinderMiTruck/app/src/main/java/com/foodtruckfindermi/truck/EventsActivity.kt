@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.SearchView
-import androidx.core.view.get
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import kotlinx.coroutines.runBlocking
@@ -19,7 +19,7 @@ class EventsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_events)
 
-        val dashboardTabButton = findViewById<Button>(R.id.eventDashboardTabButton)
+        val dashboardTabButton = findViewById<ImageButton>(R.id.dashboardTabButton)
         val email = intent.getStringExtra("email")
         val eventList = findViewById<ListView>(R.id.eventList)
         val createEventButton = findViewById<Button>(R.id.createEventButton)

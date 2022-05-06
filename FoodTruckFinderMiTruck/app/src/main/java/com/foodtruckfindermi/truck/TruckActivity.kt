@@ -9,6 +9,7 @@ import android.location.Location
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -45,8 +46,8 @@ class TruckActivity : AppCompatActivity() {
         val openButton = findViewById<Button>(R.id.openButton)
         val email = intent.getStringExtra("email")
         val reviewList = findViewById<ListView>(R.id.reviewList)
-        val eventTabButton = findViewById<Button>(R.id.eventTabButton)
-        val settingsButton = findViewById<ImageButton>(R.id.settingsButton)
+        val eventTabButton = findViewById<ImageButton>(R.id.eventTabButton)
+        val reviewExpandButton = findViewById<Button>(R.id.reviewExpandButton)
         val REQUEST_CODE = 100
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -57,16 +58,14 @@ class TruckActivity : AppCompatActivity() {
             }
         }
 
-        settingsButton.setOnClickListener {
-            val intent = Intent(this, SettingsActivity::class.java)
-            intent.putExtra("email", email)
-            startActivity(intent)
-        }
-
         eventTabButton.setOnClickListener {
             val intent = Intent(this, EventsActivity::class.java)
             intent.putExtra("email", email)
             startActivity(intent)
+        }
+
+        reviewExpandButton.setOnClickListener {
+            reviewList.visibility = View.VISIBLE
         }
 
 
