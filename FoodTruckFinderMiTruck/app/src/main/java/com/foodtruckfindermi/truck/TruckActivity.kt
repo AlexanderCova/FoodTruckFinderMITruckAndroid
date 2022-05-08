@@ -49,6 +49,8 @@ class TruckActivity : AppCompatActivity() {
         val eventTabButton = findViewById<ImageButton>(R.id.eventTabButton)
         val reviewExpandButton = findViewById<Button>(R.id.reviewExpandButton)
         val REQUEST_CODE = 100
+        var isReviewExpanded = false
+        var isSettingsExpanded = false
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -65,7 +67,17 @@ class TruckActivity : AppCompatActivity() {
         }
 
         reviewExpandButton.setOnClickListener {
-            reviewList.visibility = View.VISIBLE
+            if (!isReviewExpanded) {
+                reviewList.visibility = View.VISIBLE
+                isReviewExpanded = true
+                reviewExpandButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0)
+            } else {
+                reviewList.visibility = View.GONE
+                isReviewExpanded = false
+                reviewExpandButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0)
+
+            }
+
         }
 
 
