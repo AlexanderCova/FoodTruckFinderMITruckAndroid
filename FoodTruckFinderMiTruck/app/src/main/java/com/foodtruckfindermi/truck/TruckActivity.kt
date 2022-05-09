@@ -48,6 +48,9 @@ class TruckActivity : AppCompatActivity() {
         val reviewList = findViewById<ListView>(R.id.reviewList)
         val eventTabButton = findViewById<ImageButton>(R.id.eventTabButton)
         val reviewExpandButton = findViewById<Button>(R.id.reviewExpandButton)
+        val settingsExpandButton = findViewById<Button>(R.id.settingsExpandButton)
+        val settingsLayout = findViewById<LinearLayout>(R.id.settingLayout)
+        val resetPasswordButton = findViewById<Button>(R.id.resetPasswordButton)
         val REQUEST_CODE = 100
         var isReviewExpanded = false
         var isSettingsExpanded = false
@@ -64,6 +67,24 @@ class TruckActivity : AppCompatActivity() {
             val intent = Intent(this, EventsActivity::class.java)
             intent.putExtra("email", email)
             startActivity(intent)
+        }
+        
+        resetPasswordButton.setOnClickListener {
+            val intent = Intent(this, ResetPasswordActivity::class.java)
+            intent.putExtra("email", email)
+            startActivity(intent)
+        }
+
+        settingsExpandButton.setOnClickListener {
+            if (!isSettingsExpanded) {
+                isSettingsExpanded = true
+                settingsLayout.visibility = View.VISIBLE
+                settingsExpandButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0)
+            } else {
+                isSettingsExpanded = false
+                settingsLayout.visibility = View.GONE
+                settingsExpandButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0)
+            }
         }
 
         reviewExpandButton.setOnClickListener {

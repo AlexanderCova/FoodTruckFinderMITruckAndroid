@@ -20,6 +20,10 @@
     <string name="event_city_hint">City</string>
     <string name="event_submit_hint">Submit</string>
     <string name="back_hint">Back</string>
+    <string name="website_url">Website URL</string>
+    <string name="food_type">Food Type</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="reset_password">Reset Password</string>
 
 
     <string-array name="FoodTypes">
