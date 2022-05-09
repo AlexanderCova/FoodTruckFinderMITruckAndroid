@@ -1,5 +1,6 @@
 package com.foodtruckfindermi.truck
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,8 +14,10 @@ import androidx.core.content.ContextCompat.startActivity
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.activity_signup.*
 import kotlinx.coroutines.runBlocking
+import java.io.File
 
 class SignupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,81 +25,123 @@ class SignupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signup)
 
         val signupButton = findViewById<Button>(R.id.signupButtonConfirm)
-        val nameEdit = findViewById<EditText>(R.id.truckNameEdit)
-        val emailEdit = findViewById<EditText>(R.id.emailEdit)
-        val passwordEdit = findViewById<EditText>(R.id.editPassword)
+        val nameEdit = findViewById<TextInputEditText>(R.id.truckNameEdit)
+        val emailEdit = findViewById<TextInputEditText>(R.id.emailEdit)
+        val passwordEdit = findViewById<TextInputEditText>(R.id.passwordEdit)
+        val foodEdit = findViewById<TextInputEditText>(R.id.foodTypeEdit)
+        val cityEdit = findViewById<TextInputEditText>(R.id.cityEdit)
+        val websiteEdit = findViewById<TextInputEditText>(R.id.websiteEdit)
+        val backButton = findViewById<Button>(R.id.signupBackButton)
 
-        val food_types = resources.getStringArray(R.array.FoodTypes)
-        val food_spinner = findViewById<Spinner>(R.id.foodSpinner)
 
-        var selected_food = ""
-
-        if (food_spinner != null) {
-            val adapter = ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_item, food_types
-            )
-            food_spinner.adapter = adapter
-
-            food_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    selected_food = food_types[p2]
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                    //TODO(RUN STUFF)
-                }
-            }
+        backButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
-
-
-
 
 
         signupButton.setOnClickListener {
 
-            if(TextUtils.isEmpty(nameEdit.text)) {
+            if (TextUtils.isEmpty(nameEdit.text)) {
                 nameEdit.background = AppCompatResources.getDrawable(this, R.drawable.required_text_background)
                 Snackbar.make(signupRoot, "Field is Required!", Snackbar.LENGTH_SHORT).show()
             } else {
-                if(TextUtils.isEmpty(emailEdit.text)){
-                    emailEdit.background = AppCompatResources.getDrawable(this, R.drawable.required_text_background)
+                if (TextUtils.isEmpty(emailEdit.text)) {
+                    emailEdit.background =
+                        AppCompatResources.getDrawable(this, R.drawable.required_text_background)
                     Snackbar.make(signupRoot, "Field is Required!", Snackbar.LENGTH_SHORT).show()
                 } else {
-                    if(TextUtils.isEmpty(passwordEdit.text)) {
-                        AppCompatResources.getDrawable(this, R.drawable.required_text_background)
-                        Snackbar.make(signupRoot, "Field is Required!", Snackbar.LENGTH_SHORT).show()
+                    if (TextUtils.isEmpty(passwordEdit.text)) {
+                        passwordEdit.background = AppCompatResources.getDrawable(
+                            this,
+                            R.drawable.required_text_background
+                        )
+                        Snackbar.make(signupRoot, "Field is Required!", Snackbar.LENGTH_SHORT)
+                            .show()
                     } else {
-                        runBlocking {
+                        if (TextUtils.isEmpty(foodEdit.text)) {
+                            foodEdit.background = AppCompatResources.getDrawable(
+                                this,
+                                R.drawable.required_text_background
+                            )
+                            Snackbar.make(signupRoot, "Field is Required!", Snackbar.LENGTH_SHORT)
+                                .show()
+                        } else {
 
-                            val (_request, _response, result) = Fuel.post("http://foodtruckfindermi.com/truck-signup", listOf("name" to nameEdit.text, "email" to emailEdit.text, "password" to passwordEdit.text, "food" to selected_food))
-                                .awaitStringResponseResult()
+                            runBlocking {
 
-                            result.fold({ data ->
-                                if (data.equals("true")) {
-                                    startIntent(emailEdit.text.toString())
-                                } else if (data.equals("false")) {
-                                    Log.i("http", "false")
-                                }}, { error -> Log.e("http", "${error}")})
+                                val signupList = mutableListOf(
+                                    "name" to nameEdit.text,
+                                    "email" to emailEdit.text,
+                                    "password" to passwordEdit.text,
+                                    "food" to foodEdit.text
+                                )
 
+                                if (!cityEdit.text!!.isEmpty()) {
+                                    signupList.add("city" to cityEdit.text)
+                                }
+                                if (!websiteEdit.text!!.isEmpty()) {
+                                    signupList.add("website" to websiteEdit.text)
+                                }
+
+
+
+                                val (_, _, result) = Fuel.post(
+                                    "http://foodtruckfindermi.com/truck-signup",
+                                    signupList
+                                ).awaitStringResponseResult()
+
+                                result.fold({ data ->
+                                    if (data == "true") {
+
+                                        val file = File(filesDir, "records.txt")
+                                        if (file.exists()) {
+                                            val record =
+                                                emailEdit.text.toString() + "\n" + passwordEdit.text.toString()
+
+                                            openFileOutput(
+                                                "records.txt",
+                                                Context.MODE_PRIVATE
+                                            ).use {
+                                                it.write(record.toByteArray())
+                                            }
+                                        } else {
+                                            file.createNewFile()
+
+                                            val record =
+                                                emailEdit.text.toString() + "\n" + passwordEdit.text.toString()
+
+                                            openFileOutput(
+                                                "records.txt",
+                                                Context.MODE_PRIVATE
+                                            ).use {
+                                                it.write(record.toByteArray())
+                                            }
+                                        }
+
+                                        startIntent()
+                                    } else if (data == "false") {
+                                        val snackbar = Snackbar.make(
+                                            it, "Email Already Used",
+                                            Snackbar.LENGTH_SHORT
+                                        ).setAction("Action", null)
+
+                                        snackbar.show()
+
+                                    }
+                                }, { error -> Log.e("http", "${error}") })
+
+                            }
                         }
                     }
                 }
             }
 
+        }
+    }
 
-
-
-
-
-                }
-            }
-
-
-
-    fun startIntent(email : String) {
+    fun startIntent() {
         val intent = Intent(this, TruckActivity::class.java)
-        intent.putExtra("email", email)
         startActivity(intent)
     }
 }

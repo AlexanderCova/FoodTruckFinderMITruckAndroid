@@ -24,6 +24,8 @@
     <string name="food_type">Food Type</string>
     <string name="save_changes">Save Changes</string>
     <string name="reset_password">Reset Password</string>
+    <string name="required_hint">Required</string>
+    <string name="optional_hint">Optional</string>
 
 
     <string-array name="FoodTypes">

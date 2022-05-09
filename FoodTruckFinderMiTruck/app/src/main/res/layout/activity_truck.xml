@@ -48,7 +48,7 @@
             android:baselineAligned="false"
             android:orientation="vertical"
             android:padding="32dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -94,12 +94,6 @@
                     android:hint="@string/food_type"
                     android:textSize="20sp" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/resetPasswordButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/reset_password" />
 
             <Button
                 android:id="@+id/saveChnagesButton"

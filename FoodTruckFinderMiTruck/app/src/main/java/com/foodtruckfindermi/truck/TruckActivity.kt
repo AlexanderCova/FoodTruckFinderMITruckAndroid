@@ -27,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_truck.*
 import kotlinx.coroutines.runBlocking
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 class TruckActivity : AppCompatActivity() {
 
@@ -44,7 +45,7 @@ class TruckActivity : AppCompatActivity() {
         setContentView(R.layout.activity_truck)
 
         val openButton = findViewById<Button>(R.id.openButton)
-        val email = intent.getStringExtra("email")
+
         val reviewList = findViewById<ListView>(R.id.reviewList)
         val eventTabButton = findViewById<ImageButton>(R.id.eventTabButton)
         val reviewExpandButton = findViewById<Button>(R.id.reviewExpandButton)
@@ -57,6 +58,9 @@ class TruckActivity : AppCompatActivity() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        val file = File(filesDir, "records.txt").readLines()
+        val email = file[0]
+
         openButton.setOnClickListener {
             if (email != null) {
                 openTruck(email, fusedLocationClient)
@@ -65,12 +69,6 @@ class TruckActivity : AppCompatActivity() {
 
         eventTabButton.setOnClickListener {
             val intent = Intent(this, EventsActivity::class.java)
-            intent.putExtra("email", email)
-            startActivity(intent)
-        }
-        
-        resetPasswordButton.setOnClickListener {
-            val intent = Intent(this, ResetPasswordActivity::class.java)
             intent.putExtra("email", email)
             startActivity(intent)
         }

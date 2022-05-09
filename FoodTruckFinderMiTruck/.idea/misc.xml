@@ -5,13 +5,23 @@
       <map>
         <entry key="..\:/Users/covaa/AndroidStudioProjects/FoodTruckFinderMiTruck/app/src/main/res/layout/activity_main.xml" value="0.5401041666666667" />
         <entry key="..\:/Users/covaa/AndroidStudioProjects/FoodTruckFinderMiTruck/app/src/main/res/layout/activity_signup.xml" value="0.25" />
+        <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.2015" />
+        <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/drawable/ic_baseline_event_note_24.xml" value="0.2015" />
+        <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/drawable/ic_baseline_fastfood_24.xml" value="0.2015" />
+        <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" value="0.2015" />
+        <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/drawable/ic_baseline_keyboard_arrow_up_24.xml" value="0.2015" />
+        <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/drawable/ic_baseline_link_24.xml" value="0.2015" />
+        <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.2015" />
+        <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2015" />
         <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/drawable/ic_settings_48.xml" value="0.2875" />
         <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/drawable/login_background.xml" value="0.2015" />
+        <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/drawable/shadow_background.xml" value="0.2015" />
         <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/drawable/title_background.xml" value="0.2875" />
         <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/layout/activity_events.xml" value="0.25" />
         <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/layout/activity_login.xml" value="0.5494791666666666" />
         <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/layout/activity_main.xml" value="0.3319746376811594" />
-        <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/layout/activity_signup.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/layout/activity_reset_password.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/layout/activity_signup.xml" value="0.25" />
         <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/layout/activity_truck.xml" value="0.25" />
         <entry key="..\:/Users/covaa/Documents/FoodTruckFinderMITruckAndroid/FoodTruckFinderMiTruck/app/src/main/res/layout/list_item.xml" value="0.4548952543822146" />
         <entry key="app/src/main/res/drawable-v24/searchview_background.xml" value="0.195" />
