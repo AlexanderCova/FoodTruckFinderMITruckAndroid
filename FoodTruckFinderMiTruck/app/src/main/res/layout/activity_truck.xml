@@ -5,125 +5,156 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1"
+    android:weightSum="1.0"
     tools:context=".TruckActivity">
 
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight=".1"
-        android:orientation="vertical">
+        android:layout_weight=".1">
 
-        <TextView
-            android:id="@+id/dashboardTitleLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/dashboard_tab"
-            android:textAlignment="center"
-            android:textSize="40sp" />
-
-        <Button
-            android:id="@+id/openButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/open_truck_hint" />
-
-        <Button
-            android:id="@+id/settingsExpandButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/gray"
-            android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-            android:text="@string/settings_hint"
-            android:textAlignment="textStart"
-            tools:ignore="TextContrastCheck" />
 
         <LinearLayout
-            android:id="@+id/settingLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shadow_background"
-            android:baselineAligned="false"
-            android:orientation="vertical"
-            android:padding="32dp"
-            android:visibility="gone">
+            android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/dashboardTitleLabel"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                app:startIconDrawable="@drawable/ic_baseline_email_24">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/emailEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/email_hint"
-                    android:inputType="textEmailAddress"
-                    android:textSize="20sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                app:startIconDrawable="@drawable/ic_baseline_link_24">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/websiteEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/website_url"
-                    android:textSize="20sp"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                app:startIconDrawable="@drawable/ic_baseline_fastfood_24">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/foodTypeEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/food_type"
-                    android:textSize="20sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="16dp"
+                android:text="@string/dashboard_tab"
+                android:textAlignment="center"
+                android:textSize="40sp" />
 
             <Button
-                android:id="@+id/saveChnagesButton"
+                android:id="@+id/openButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/open_truck_hint" />
+
+            <Button
+                android:id="@+id/settingsExpandButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/save_changes" />
+                android:backgroundTint="@color/gray"
+                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                android:text="@string/settings_hint"
+                android:textAlignment="textStart"
+                tools:ignore="TextContrastCheck" />
+
+            <LinearLayout
+                android:id="@+id/settingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shadow_background"
+                android:baselineAligned="false"
+                android:orientation="vertical"
+                android:padding="32dp"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    app:startIconDrawable="@drawable/ic_baseline_email_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/emailEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/email_hint"
+                        android:inputType="textEmailAddress"
+                        android:textSize="20sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    app:startIconDrawable="@drawable/ic_baseline_link_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/websiteEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/website_url"
+                        android:textSize="20sp"
+                        tools:ignore="TextContrastCheck" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    app:startIconDrawable="@drawable/ic_baseline_fastfood_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/foodTypeEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/food_type"
+                        android:textSize="20sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/saveChnagesButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save_changes" />
+
+                <Button
+                    android:id="@+id/picProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_profile_pic_hint" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:contentDescription="@string/profile_pic_desc" />
+
+                <Button
+                    android:id="@+id/submitProfileButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:text="@string/event_submit_hint" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/reviewExpandButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/gray"
+                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                android:text="@string/reviews_title"
+                android:textAlignment="textStart"
+                tools:ignore="TextContrastCheck" />
+
+            <ListView
+                android:id="@+id/reviewList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="1dp"
+                android:fastScrollEnabled="false"
+                android:isScrollContainer="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="16dp"
+                android:visibility="gone"
+                tools:listitem="@layout/list_item"
+                tools:ignore="NestedScrolling" />
+
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/reviewExpandButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/gray"
-            android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-            android:text="@string/reviews_title"
-            android:textAlignment="textStart"
-            tools:ignore="TextContrastCheck" />
-
-        <ListView
-            android:id="@+id/reviewList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:paddingBottom="16dp"
-            android:visibility="gone"
-            tools:listitem="@layout/list_item">
-
-        </ListView>
-    </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -161,6 +192,8 @@
             android:contentDescription="@string/events_tab_text"
             android:src="@drawable/ic_baseline_event_note_24"
             tools:ignore="ImageContrastCheck" />
+
+
     </LinearLayout>
 
 </LinearLayout>

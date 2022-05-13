@@ -33,22 +33,4 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/picProfile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Pick Profile Pic" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <Button
-        android:id="@+id/submitProfileButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:text="@string/event_submit_hint" />
 </LinearLayout>

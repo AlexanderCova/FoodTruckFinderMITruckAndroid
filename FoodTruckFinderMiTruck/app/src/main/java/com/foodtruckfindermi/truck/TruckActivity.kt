@@ -5,11 +5,14 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.location.Location
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -40,6 +43,8 @@ class TruckActivity : AppCompatActivity() {
 
     private lateinit var reviewArrayList : ArrayList<Review>
 
+    private lateinit var bmp : Bitmap
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_truck)
@@ -51,7 +56,8 @@ class TruckActivity : AppCompatActivity() {
         val reviewExpandButton = findViewById<Button>(R.id.reviewExpandButton)
         val settingsExpandButton = findViewById<Button>(R.id.settingsExpandButton)
         val settingsLayout = findViewById<LinearLayout>(R.id.settingLayout)
-        val resetPasswordButton = findViewById<Button>(R.id.resetPasswordButton)
+
+
         val REQUEST_CODE = 100
         var isReviewExpanded = false
         var isSettingsExpanded = false
@@ -62,9 +68,7 @@ class TruckActivity : AppCompatActivity() {
         val email = file[0]
 
         openButton.setOnClickListener {
-            if (email != null) {
-                openTruck(email, fusedLocationClient)
-            }
+            openTruck(email, fusedLocationClient)
         }
 
         eventTabButton.setOnClickListener {
@@ -124,6 +128,17 @@ class TruckActivity : AppCompatActivity() {
                     }
 
                     reviewList.adapter = ReviewAdapter(this@TruckActivity, reviewArrayList)
+
+                    var totalHeight = 0
+                    for (i in 0 until reviewList.adapter.count) {
+                        val listItem: View = reviewList.adapter.getView(i, null, reviewList)
+                        listItem.measure(0, 0)
+                        totalHeight += listItem.measuredHeight + listItem.measuredHeightAndState / 2
+                    }
+                    val params: ViewGroup.LayoutParams = reviewList.layoutParams
+                    params.height = totalHeight + reviewList.dividerHeight * (reviewList.adapter.count - 1)
+                    reviewList.layoutParams = params
+                    reviewList.requestLayout()
 
                 },
                 { error -> Log.e("http", "${error}") })
@@ -207,6 +222,37 @@ class TruckActivity : AppCompatActivity() {
 
 
 
+        val REQUEST_CODE = 100
+
+        val profilePickerButton = findViewById<Button>(R.id.picProfile)
+        val submitButton = findViewById<Button>(R.id.submitProfileButton)
+        val image = findViewById<ImageView>(R.id.imageView2)
+
+        val email = intent.getStringExtra("email")
+
+        profilePickerButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, REQUEST_CODE)
+            submitButton.isClickable = true
+        }
+
+        submitButton.setOnClickListener {
+            val stream = ByteArrayOutputStream()
+            val bitmap = (image.drawable as BitmapDrawable).bitmap
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
+            val bytes = stream.toByteArray()
+            val serverString = Base64.encodeToString(bytes, Base64.DEFAULT)
+            Log.i("image", serverString)
+
+            runBlocking {
+                val (_, _, result) = Fuel.post("http://foodtruckfindermi.com/upload-pfp", listOf("image" to serverString, "email" to email)).awaitStringResponseResult()
+            }
+
+        }
+
+
+
 
 
 
@@ -232,6 +278,18 @@ class TruckActivity : AppCompatActivity() {
                 }
                 return
             }
+        }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val REQUEST_CODE = 100
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE){
+            val image = findViewById<ImageView>(R.id.imageView2)
+            data?.data // handle chosen image
+            bmp = MediaStore.Images.Media.getBitmap(this.contentResolver, data?.data)
+            image.setImageBitmap(bmp)
         }
     }
 

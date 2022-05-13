@@ -26,6 +26,8 @@
     <string name="reset_password">Reset Password</string>
     <string name="required_hint">Required</string>
     <string name="optional_hint">Optional</string>
+    <string name="profile_pic_desc">Your Profile Picture</string>
+    <string name="select_profile_pic_hint">Pick Profile Pic</string>
 
 
     <string-array name="FoodTypes">
