@@ -1,4 +1,4 @@
-package com.foodtruckfindermi.truck
+package com.foodtruckfindermi.truck.Adapters
 
 import android.app.Activity
 import android.view.LayoutInflater
@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.example.youfood.Review
+import com.foodtruckfindermi.truck.DataClasses.Event
+import com.foodtruckfindermi.truck.R
 
 class EventAdapter(private val context: Activity, private val arrayList: ArrayList<Event>) : ArrayAdapter<Event>(context,
     R.layout.list_item,arrayList) {

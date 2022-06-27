@@ -1,39 +1,45 @@
-package com.foodtruckfindermi.truck
+package com.foodtruckfindermi.truck.Fragments
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ListView
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.SearchView
 import com.foodtruckfindermi.truck.Adapters.EventAdapter
+import com.foodtruckfindermi.truck.CreateEventActivity
 import com.foodtruckfindermi.truck.DataClasses.Event
+import com.foodtruckfindermi.truck.R
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
+import kotlinx.android.synthetic.main.fragment_event.*
 import kotlinx.coroutines.runBlocking
 
-class EventsActivity : AppCompatActivity() {
 
+class EventFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_events)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_event, container, false)
+    }
 
-        val dashboardTabButton = findViewById<ImageButton>(R.id.dashboardTabButton)
-        val email = intent.getStringExtra("email")
-        val eventList = findViewById<ListView>(R.id.eventList)
-        val createEventButton = findViewById<Button>(R.id.createEventButton)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        dashboardTabButton.setOnClickListener {
-            val intent = Intent(this, TruckActivity::class.java)
-            intent.putExtra("email", email)
-            startActivity(intent)
-        }
+        val activity = requireActivity().intent
+
+        val email = activity.getStringExtra("email")
+        val eventList = eventList
+        val createEventButton = createEventButton
+
 
         createEventButton.setOnClickListener {
-            val intent = Intent(this, CreateEventActivity::class.java)
+            val intent = Intent(requireActivity(), CreateEventActivity::class.java)
             startActivity(intent)
         }
 
@@ -41,7 +47,7 @@ class EventsActivity : AppCompatActivity() {
 
 
         runBlocking {
-            val (request, response, result) = Fuel.get("http://foodtruckfindermi.com/event-query")
+            val (_, _, result) = Fuel.get("http://foodtruckfindermi.com/event-query")
                 .awaitStringResponseResult()
 
             result.fold(
@@ -50,7 +56,7 @@ class EventsActivity : AppCompatActivity() {
                     val eventNameArray = eventArray[0].split("`").drop(1)
                     val eventDescArray = eventArray[1].split("`").drop(1)
                     val eventDateArray = eventArray[2].split("`").drop(1)
-                    val searchView = findViewById<SearchView>(R.id.searchView)
+                    val searchView = searchView
 
                     var eventArrayList = ArrayList<Event>()
 
@@ -58,7 +64,7 @@ class EventsActivity : AppCompatActivity() {
                         val event = Event(eventNameArray[i], eventDescArray[i], eventDateArray[i])
                         eventArrayList.add(event)
                     }
-                    eventList.adapter = EventAdapter(this@EventsActivity, eventArrayList)
+                    eventList.adapter = EventAdapter(requireActivity(), eventArrayList)
 
                     searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                         override fun onQueryTextSubmit(query: String?): Boolean {
@@ -68,7 +74,7 @@ class EventsActivity : AppCompatActivity() {
                             for (i in eventNameArray.indices) {
                                 if (eventNameArray[i].contains(query.toString())) {
                                     newEventList.add(Event(eventNameArray[i], eventDescArray[i], eventDateArray[i]))
-                                    eventList.adapter = EventAdapter(this@EventsActivity, newEventList)
+                                    eventList.adapter = EventAdapter(requireActivity(), newEventList)
                                 }
                             }
                             return false
@@ -80,7 +86,7 @@ class EventsActivity : AppCompatActivity() {
                             for (i in eventNameArray.indices) {
                                 if (eventNameArray[i].contains(newText.toString())) {
                                     newEventList.add(Event(eventNameArray[i], eventDescArray[i], eventDateArray[i]))
-                                    eventList.adapter = EventAdapter(this@EventsActivity, newEventList)
+                                    eventList.adapter = EventAdapter(requireActivity(), newEventList)
                                 }
                             }
                             return false
@@ -92,6 +98,5 @@ class EventsActivity : AppCompatActivity() {
                 { error -> Log.e("http", error.toString())}
             )
         }
-
     }
 }
