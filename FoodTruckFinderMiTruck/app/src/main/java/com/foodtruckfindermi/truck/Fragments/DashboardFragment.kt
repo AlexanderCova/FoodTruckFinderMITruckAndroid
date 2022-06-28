@@ -68,7 +68,7 @@ class DashboardFragment : Fragment() {
         val activity = requireActivity()
 
 
-        val REQUEST_CODE = 100
+
         var isReviewExpanded = false
         var isSettingsExpanded = false
 
@@ -150,6 +150,34 @@ class DashboardFragment : Fragment() {
                 { error -> Log.e("http", "${error}") })
         }
 
+        val REQUEST_CODE = 100
+
+        val profilePickerButton = picProfile
+        val submitButton = submitProfileButton
+        val image = imageView2
+
+        profilePickerButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, REQUEST_CODE)
+            submitButton.isClickable = true
+        }
+
+        submitButton.setOnClickListener {
+            val stream = ByteArrayOutputStream()
+            val bitmap = (image.drawable as BitmapDrawable).bitmap
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
+            val bytes = stream.toByteArray()
+            val serverString = Base64.encodeToString(bytes, Base64.DEFAULT)
+            Log.i("image", serverString)
+
+            runBlocking {
+                val (_, _, result) = Fuel.post("http://foodtruckfindermi.com/upload-pfp", listOf("image" to serverString, "email" to email)).awaitStringResponseResult()
+            }
+
+        }
+
+
     }
 
 
@@ -230,34 +258,6 @@ class DashboardFragment : Fragment() {
 
 
 
-        val REQUEST_CODE = 100
-
-        val profilePickerButton = picProfile
-        val submitButton = submitProfileButton
-        val image = imageView2
-
-        val email = activity.intent.getStringExtra("email")
-
-        profilePickerButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, REQUEST_CODE)
-            submitButton.isClickable = true
-        }
-
-        submitButton.setOnClickListener {
-            val stream = ByteArrayOutputStream()
-            val bitmap = (image.drawable as BitmapDrawable).bitmap
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
-            val bytes = stream.toByteArray()
-            val serverString = Base64.encodeToString(bytes, Base64.DEFAULT)
-            Log.i("image", serverString)
-
-            runBlocking {
-                val (_, _, result) = Fuel.post("http://foodtruckfindermi.com/upload-pfp", listOf("image" to serverString, "email" to email)).awaitStringResponseResult()
-            }
-
-        }
 
 
 

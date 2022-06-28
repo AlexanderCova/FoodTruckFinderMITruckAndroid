@@ -25,7 +25,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:background="@color/gray"
-            android:contentDescription="@string/search_tab"
+            android:contentDescription="@string/dashboard_tab"
             android:padding="10dp"
             android:src="@drawable/ic_baseline_dashboard_24"
             tools:ignore="SpeakableTextPresentCheck" />
@@ -37,13 +37,13 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:background="@color/gray"
-            android:contentDescription="@string/event_tab"
+            android:contentDescription="@string/events_tab_text"
             android:padding="10dp"
             android:src="@drawable/ic_baseline_event_note_24"
             tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/mViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
