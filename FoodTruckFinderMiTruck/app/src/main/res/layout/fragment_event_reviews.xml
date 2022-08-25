@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Fragments.EventReviewsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/eventBodyTextEdit"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:ems="10"
+            android:fontFamily="@font/nunito"
+            android:gravity="start|top"
+            android:hint="Enter Body Here"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:textColorHint="#757575" />
+
+        <Button
+            android:id="@+id/submitEventReviewButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:backgroundTint="@color/gold"
+            android:fontFamily="@font/nunito"
+            android:text="@string/event_submit_hint"
+            android:textColor="@color/black" />
+
+        <ListView
+            android:id="@+id/eventReviewList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="16dp"
+            android:isScrollContainer="false"
+            android:paddingBottom="16dp"
+            android:transcriptMode="disabled"
+            tools:listitem="@layout/list_item" />
+    </LinearLayout>
+</ScrollView>

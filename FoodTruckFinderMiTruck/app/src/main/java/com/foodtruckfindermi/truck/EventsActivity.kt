@@ -50,7 +50,7 @@ class EventsActivity : AppCompatActivity() {
                     val eventNameArray = eventArray[0].split("`").drop(1)
                     val eventDescArray = eventArray[1].split("`").drop(1)
                     val eventDateArray = eventArray[2].split("`").drop(1)
-                    val searchView = findViewById<SearchView>(R.id.searchView)
+                    val searchView = findViewById<SearchView>(R.id.eventSearchView)
 
                     var eventArrayList = ArrayList<Event>()
 

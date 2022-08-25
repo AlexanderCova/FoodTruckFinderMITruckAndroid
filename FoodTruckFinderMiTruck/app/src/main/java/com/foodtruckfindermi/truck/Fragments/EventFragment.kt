@@ -11,11 +11,13 @@ import android.widget.SearchView
 import com.foodtruckfindermi.truck.Adapters.EventAdapter
 import com.foodtruckfindermi.truck.CreateEventActivity
 import com.foodtruckfindermi.truck.DataClasses.Event
+import com.foodtruckfindermi.truck.EventInfoActivity
 import com.foodtruckfindermi.truck.R
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import kotlinx.android.synthetic.main.fragment_event.*
 import kotlinx.coroutines.runBlocking
+import org.json.JSONObject
 
 
 class EventFragment : Fragment() {
@@ -52,28 +54,45 @@ class EventFragment : Fragment() {
 
             result.fold(
                 { data ->
-                    var eventArray = data.split("^")
-                    val eventNameArray = eventArray[0].split("`").drop(1)
-                    val eventDescArray = eventArray[1].split("`").drop(1)
-                    val eventDateArray = eventArray[2].split("`").drop(1)
-                    val searchView = searchView
+                    val jsonString = """
+                        {
+                            "Events": $data
+                        }
+                    """.trimIndent()
 
-                    var eventArrayList = ArrayList<Event>()
+                    val searchView = eventSearchView
+                    val eventArrayList = ArrayList<Event>()
 
-                    for (i in eventNameArray.indices) {
-                        val event = Event(eventNameArray[i], eventDescArray[i], eventDateArray[i])
+                    val eventJsonObject = JSONObject(jsonString)
+                    val eventObject = eventJsonObject.getJSONArray("Events")
+
+                    for (i in 0 until(eventObject.length())) {
+                        val event = Event(
+                            eventObject.getJSONObject(i).getString("name"),
+                            eventObject.getJSONObject(i).getString("date"),
+                            eventObject.getJSONObject(i).getString("desc")
+                        )
+
                         eventArrayList.add(event)
                     }
                     eventList.adapter = EventAdapter(requireActivity(), eventArrayList)
+                    eventList.setOnItemClickListener { _, _, position, _ ->
+
+                        val intent = Intent(requireActivity(), EventInfoActivity::class.java)
+                        Log.i("INFO", eventArrayList[position].name)
+                        intent.putExtra("name", eventArrayList[position].name)
+                        startActivity(intent)
+
+                    }
 
                     searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                         override fun onQueryTextSubmit(query: String?): Boolean {
 
                             val newEventList = ArrayList<Event>()
                             searchView.clearFocus()
-                            for (i in eventNameArray.indices) {
-                                if (eventNameArray[i].contains(query.toString())) {
-                                    newEventList.add(Event(eventNameArray[i], eventDescArray[i], eventDateArray[i]))
+                            for (i in eventArrayList.indices) {
+                                if (eventArrayList[i].name.contains(query.toString())) {
+                                    newEventList.add(eventArrayList[i])
                                     eventList.adapter = EventAdapter(requireActivity(), newEventList)
                                 }
                             }
@@ -83,9 +102,9 @@ class EventFragment : Fragment() {
                         override fun onQueryTextChange(newText: String?): Boolean {
                             val newEventList = ArrayList<Event>()
 
-                            for (i in eventNameArray.indices) {
-                                if (eventNameArray[i].contains(newText.toString())) {
-                                    newEventList.add(Event(eventNameArray[i], eventDescArray[i], eventDateArray[i]))
+                            for (i in eventArrayList.indices) {
+                                if (eventArrayList[i].name.contains(newText.toString())) {
+                                    newEventList.add(eventArrayList[i])
                                     eventList.adapter = EventAdapter(requireActivity(), newEventList)
                                 }
                             }

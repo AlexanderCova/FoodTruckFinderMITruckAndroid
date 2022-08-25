@@ -30,7 +30,7 @@
             android:text="@string/create_event_hint" />
 
         <SearchView
-            android:id="@+id/searchView"
+            android:id="@+id/eventSearchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/searchview_background"

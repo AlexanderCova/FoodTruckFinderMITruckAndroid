@@ -3,7 +3,11 @@ package com.foodtruckfindermi.truck
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
+import kotlinx.coroutines.runBlocking
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -32,5 +36,24 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+    }
+
+    public fun getName(email : String) : String {
+        var name = ""
+
+        runBlocking {
+            val (_, _, result) = Fuel.get(
+                "http://foodtruckfindermi.com/get-name",
+                listOf("email" to email)
+            ).awaitStringResponseResult()
+
+            result.fold(
+                { data ->
+                    name = data
+                },
+                {error -> Log.e("HTTP", "$error")})
+        }
+
+        return name
     }
 }

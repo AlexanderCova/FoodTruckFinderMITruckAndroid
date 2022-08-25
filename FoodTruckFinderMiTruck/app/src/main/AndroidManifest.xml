@@ -15,7 +15,7 @@
         android:theme="@style/Theme.FoodTruckFinderMiTruck"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ResetPasswordActivity"
+            android:name=".EventInfoActivity"
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"
@@ -44,6 +44,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

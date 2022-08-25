@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.coroutines.runBlocking
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -42,7 +43,7 @@ class DashboardFragment : Fragment() {
     private lateinit var reviewAuthorArray: Array<String>
     private lateinit var reviewDateArray: Array<String>
 
-    private lateinit var reviewArrayList : ArrayList<Review>
+    private var reviewArrayList : ArrayList<Review> = ArrayList<Review>()
 
     private lateinit var bmp : Bitmap
 
@@ -81,6 +82,20 @@ class DashboardFragment : Fragment() {
             openTruck(email, fusedLocationClient)
         }
 
+        saveChangesButton.setOnClickListener {
+            runBlocking {
+                val (_, _, result) = Fuel.post("http://foodtruckfindermi.com/update-profile",
+                    listOf(
+                        "truckemail" to email,
+                        "city" to cityEditText.text,
+                        "website" to websiteEditText.text,
+                        "foodtype" to foodTypeEditText.text
+                        )
+                ).awaitStringResponseResult()
+
+            }
+        }
+
 
 
         settingsExpandButton.setOnClickListener {
@@ -116,20 +131,22 @@ class DashboardFragment : Fragment() {
 
             result.fold(
                 { data ->
-                    var reviewArray = data.split("^")
-                    Log.i("Arrays", reviewArray[0].toString())
+                    val jsonString = """
+                        {
+                            "Reviews": $data
+                        }
+                    """.trimIndent()
 
-                    reviewAuthorArray = reviewArray[0].split("`").drop(1).toTypedArray()
+                    val reviewJsonObject = JSONObject(jsonString)
+                    val reviewObject = reviewJsonObject.getJSONArray("Reviews")
 
-                    reviewBodyArray = reviewArray[1].split("`").drop(1).toTypedArray()
+                    for (i in 0 until(reviewObject.length())) {
 
-                    reviewDateArray = reviewArray[2].split("`").drop(1).toTypedArray()
-
-                    reviewArrayList = ArrayList()
-
-                    for(i in reviewAuthorArray.indices){
-
-                        val review = Review(reviewAuthorArray[i], reviewBodyArray[i], reviewDateArray[i])
+                        val review = Review(
+                            reviewObject.getJSONObject(i).getString("author"),
+                            reviewObject.getJSONObject(i).getString("body"),
+                            reviewObject.getJSONObject(i).getString("date")
+                        )
                         reviewArrayList.add(review)
                     }
 
@@ -164,6 +181,7 @@ class DashboardFragment : Fragment() {
         }
 
         submitButton.setOnClickListener {
+            Log.i("SUBMITING", "Started Submit")
             val stream = ByteArrayOutputStream()
             val bitmap = (image.drawable as BitmapDrawable).bitmap
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
