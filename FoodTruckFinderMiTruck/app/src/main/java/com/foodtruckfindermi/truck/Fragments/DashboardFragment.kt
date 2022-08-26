@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import com.foodtruckfindermi.truck.DataClasses.Review
 import com.foodtruckfindermi.truck.Adapters.ReviewAdapter
 import com.foodtruckfindermi.truck.R
+import com.foodtruckfindermi.truck.SettingsActivity
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -80,6 +81,11 @@ class DashboardFragment : Fragment() {
 
         openButton.setOnClickListener {
             openTruck(email, fusedLocationClient)
+        }
+
+        settingsButton.setOnClickListener {
+            val intent = Intent(requireActivity(), SettingsActivity::class.java)
+            activity.startActivity(intent)
         }
 
         saveChangesButton.setOnClickListener {
@@ -181,13 +187,13 @@ class DashboardFragment : Fragment() {
         }
 
         submitButton.setOnClickListener {
-            Log.i("SUBMITING", "Started Submit")
+
             val stream = ByteArrayOutputStream()
             val bitmap = (image.drawable as BitmapDrawable).bitmap
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
             val bytes = stream.toByteArray()
             val serverString = Base64.encodeToString(bytes, Base64.DEFAULT)
-            Log.i("image", serverString)
+
 
             runBlocking {
                 val (_, _, result) = Fuel.post("http://foodtruckfindermi.com/upload-pfp", listOf("image" to serverString, "email" to email)).awaitStringResponseResult()
@@ -238,9 +244,6 @@ class DashboardFragment : Fragment() {
                     lon = location.longitude
                 }
             }
-
-        Log.i("Lat", lat.toString())
-        Log.i("Lon", lon.toString())
 
         runBlocking {
             val (_request, _response, result) = Fuel.post("http://foodtruckfindermi.com/open-truck", listOf("email" to email, "lat" to lat.toString(), "lon" to lon.toString()))

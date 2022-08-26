@@ -79,7 +79,7 @@ class EventFragment : Fragment() {
                     eventList.setOnItemClickListener { _, _, position, _ ->
 
                         val intent = Intent(requireActivity(), EventInfoActivity::class.java)
-                        Log.i("INFO", eventArrayList[position].name)
+
                         intent.putExtra("name", eventArrayList[position].name)
                         startActivity(intent)
 

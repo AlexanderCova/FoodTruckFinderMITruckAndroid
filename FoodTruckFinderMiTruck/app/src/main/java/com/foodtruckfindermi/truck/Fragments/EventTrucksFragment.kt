@@ -55,7 +55,7 @@ class EventTrucksFragment : Fragment() {
                     val truckArrayString = eventObject.getJSONObject(0).getString("trucks")
                     val truckArray = truckArrayString.split("`").drop(1).toMutableList()
 
-                    Log.i("INFO",truckArray.toString())
+
 
 
 
@@ -63,7 +63,7 @@ class EventTrucksFragment : Fragment() {
 
                     val truckArrayList = getTruckArray(truckArray)
 
-                    Log.i("INFO",truckArrayList.toString())
+
 
                     eventTruckList.adapter = TruckAdapter(requireActivity(), truckArrayList)
 

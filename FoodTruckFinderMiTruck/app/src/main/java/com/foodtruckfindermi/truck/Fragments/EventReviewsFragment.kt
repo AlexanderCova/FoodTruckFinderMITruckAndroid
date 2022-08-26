@@ -55,7 +55,7 @@ class EventReviewsFragment : Fragment() {
                             "Reviews": $data
                         }
                     """.trimIndent()
-                    Log.i("REVIEWS", jsonString)
+
 
                     val reviewJsonObject = JSONObject(jsonString)
                     val reviewObject = reviewJsonObject.getJSONArray("Reviews")

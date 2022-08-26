@@ -12,12 +12,14 @@ import android.util.Base64
 import android.util.Base64.encodeToString
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import kotlinx.android.synthetic.*
 import kotlinx.coroutines.runBlocking
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.*
 
 class SettingsActivity : AppCompatActivity() {
@@ -27,44 +29,21 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val REQUEST_CODE = 100
+        val logoutButton = findViewById<Button>(R.id.logoutButton)
+        val backButton = findViewById<ImageButton>(R.id.settingsBackButton)
 
-        val profilePickerButton = findViewById<Button>(R.id.picProfile)
-        val submitButton = findViewById<Button>(R.id.submitProfileButton)
-        val image = findViewById<ImageView>(R.id.imageView2)
+        val file = File(filesDir, "records.txt")
 
-        val email = intent.getStringExtra("email")
-
-        profilePickerButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, REQUEST_CODE)
-            submitButton.isClickable = true
+        logoutButton.setOnClickListener {
+            file.delete()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
 
-        submitButton.setOnClickListener {
-            val stream = ByteArrayOutputStream()
-            val bitmap = (image.drawable as BitmapDrawable).bitmap
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
-            val bytes = stream.toByteArray()
-            val serverString = encodeToString(bytes, Base64.DEFAULT)
-            Log.i("image", serverString)
-
-            runBlocking {
-                val (_, _, result) = Fuel.post("http://foodtruckfindermi.com/upload-pfp", listOf("image" to serverString, "email" to email)).awaitStringResponseResult()
-            }
-
+        backButton.setOnClickListener {
+            onBackPressed()
         }
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val REQUEST_CODE = 100
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE){
-            val image = findViewById<ImageView>(R.id.imageView2)
-            data?.data // handle chosen image
-            bmp = MediaStore.Images.Media.getBitmap(this.contentResolver, data?.data)
-            image.setImageBitmap(bmp)
-        }
+
     }
 }
