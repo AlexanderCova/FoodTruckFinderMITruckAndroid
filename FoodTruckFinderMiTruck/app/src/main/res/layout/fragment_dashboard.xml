@@ -79,7 +79,7 @@
                 android:baselineAligned="false"
                 android:orientation="vertical"
                 android:padding="32dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -128,7 +128,7 @@
                         android:src="@drawable/ic_baseline_edit_24"
                         app:layout_constraintStart_toStartOf="@+id/imageView2"
                         app:layout_constraintTop_toTopOf="@+id/imageView2"
-                        app:tint="@color/black" />
+                        app:tint="@color/blue_gray" />
 
                     <TextView
                         android:id="@+id/profilePictureLabel"

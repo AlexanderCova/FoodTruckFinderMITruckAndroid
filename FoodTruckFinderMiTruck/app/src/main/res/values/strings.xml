@@ -10,6 +10,7 @@
     <string name="login">Login</string>
     <string name="dashboard_tab">Dashboard</string>
     <string name="open_truck_hint">Open Truck</string>
+    <string name="close_truck_hint">Close Truck</string>
     <string name="events_tab_text">Events</string>
     <string name="settings_hint">Settings</string>
     <string name="reviews_title">Reviews</string>
@@ -44,5 +45,6 @@
     <string name="going_hint">Going</string>
     <string name="not_going_hint">Cancel Going</string>
     <string name="info_hint">Info</string>
+    <string name="click_to_continue">Click to Continue</string>
 
 </resources>

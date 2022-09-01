@@ -2,12 +2,12 @@ package com.foodtruckfindermi.truck
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import com.google.android.material.snackbar.Snackbar
@@ -57,7 +57,10 @@ class LoginActivity : AppCompatActivity() {
                         val snackbar = Snackbar.make(
                             it, "Incorrect Credentials",
                             Snackbar.LENGTH_SHORT
-                        ).setAction("Action", null).show()
+                        ).setAction("Signup", View.OnClickListener(){
+                            val intent = Intent(this@LoginActivity, SignupActivity::class.java)
+                            startActivity(intent)
+                        } ).show()
                     }
                 }, {error -> Log.e("http", "${error}")})
 

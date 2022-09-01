@@ -15,6 +15,9 @@
         android:theme="@style/Theme.FoodTruckFinderMiTruck"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".EventInfoActivity"
             android:exported="false" />
         <activity
@@ -36,7 +39,7 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

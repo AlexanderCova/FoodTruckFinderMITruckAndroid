@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.location.Location
 import android.os.Bundle
@@ -69,15 +70,55 @@ class DashboardFragment : Fragment() {
 
         val activity = requireActivity()
 
+        val file = File(activity.filesDir, "records.txt").readLines()
+        val email = file[0]
 
+        var name = ""
+
+        runBlocking {
+            val (_,_,nameResult) = Fuel.get("http://foodtruckfindermi.com/get-name", listOf("email" to email)).awaitStringResponseResult()
+
+            nameResult.fold(
+                {data -> name = data},
+                {error -> Log.e("HTTP", "$error")}
+            )
+
+            val (_,_,result) = Fuel.get("http://foodtruckfindermi.com/get-truck-info", listOf("name" to name)).awaitStringResponseResult()
+
+            result.fold(
+                {data ->
+                    val jsonString = """
+                        {
+                            "Truck": $data
+                        }
+                    """.trimIndent()
+
+                    val truckJsonObject = JSONObject(jsonString)
+                    val truckObject = truckJsonObject.getJSONArray("Truck")
+
+                    val isOpen = truckObject.getJSONObject(0).getString("isopen")
+
+                    if (isOpen == "1") {
+                        openButton.text = activity.getString(R.string.close_truck_hint)
+                    } else {
+                        openButton.text = activity.getString(R.string.open_truck_hint)
+                    }
+
+                    val bytes = Base64.decode(truckObject.getJSONObject(0).getString("profile"), Base64.DEFAULT)
+                    val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                    imageView2.setImageBitmap(bmp)
+
+
+                },
+                {error -> Log.e("HTTP", "$error")}
+            )
+        }
 
         var isReviewExpanded = false
         var isSettingsExpanded = false
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
 
-        val file = File(activity.filesDir, "records.txt").readLines()
-        val email = file[0]
 
         openButton.setOnClickListener {
             openTruck(email, fusedLocationClient)
