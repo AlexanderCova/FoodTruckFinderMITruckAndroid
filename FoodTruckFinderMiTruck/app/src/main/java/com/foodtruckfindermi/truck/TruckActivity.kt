@@ -2,10 +2,15 @@ package com.foodtruckfindermi.truck
 
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.foodtruckfindermi.truck.Adapters.UserPagerAdapter
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.io.File
 
 
 class TruckActivity : AppCompatActivity() {
@@ -26,6 +31,11 @@ class TruckActivity : AppCompatActivity() {
         dashboardBtn = findViewById(R.id.dashboardBtn)
         eventBtn = findViewById(R.id.eventBtn)
 
+        FirebaseApp.initializeApp(this)
+        val db = Firebase.firestore
+        val file = File(filesDir, "records.txt").readLines()
+        val email = file[0]
+
         dashboardBtn.setOnClickListener {
             mViewPager.currentItem = 0
         }
@@ -33,6 +43,28 @@ class TruckActivity : AppCompatActivity() {
         eventBtn.setOnClickListener {
             mViewPager.currentItem = 1
         }
+        val truckDoc = db.collection("Users").document(email)
+        truckDoc.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val document = task.result
+                if(document != null) {
+                    if (document.exists()) {
+                        return@addOnCompleteListener
+                    } else {
+                        val userData = hashMapOf(
+                            "groups" to listOf<String>(),
+                            "name" to email
+                        )
+
+                        truckDoc.set(userData)
+                    }
+                }
+            } else {
+                Log.d("TAG", "Error: ", task.exception)
+            }
+        }
+
+
 
 
         mPagerViewAdapter = UserPagerAdapter(supportFragmentManager)
